@@ -9,13 +9,22 @@ db.sqlite3
 *.env
 *.venv
 venv/
+env/
 staticfiles/
 media/
+
 # .env file
 .env
-
 
 # Autres
 *.DS_Store
 .idea/
 .vscode/
+
+# macOs
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini

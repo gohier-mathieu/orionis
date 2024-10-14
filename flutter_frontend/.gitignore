@@ -41,3 +41,29 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+
+# macOs
+.DS_Store
+.AppleDouble
+.LSOverride
+**/ios/Flutter/Flutter.framework/
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Flutter.podfile
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/Runner.xcworkspace/
+**/ios/Runner.xcodeproj/project.pbxproj
+**/ios/Flutter/App.framework
+
+
+# Windows
+Thumbs.db
+Desktop.ini
+**/android/.gradle/
+**/android/app/build/
+**/android/local.properties
+
+
+
