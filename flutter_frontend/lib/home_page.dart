@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/main.dart';
-import 'api_service.dart';
+import 'bottom_nav_bar.dart';
 import 'login_page.dart';
 import 'user_profile_page.dart'; // Importez la page de profil
+import 'api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? username;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -28,18 +28,13 @@ class _HomePageState extends State<HomePage> {
         username = userData['username'];
       });
     } catch (e) {
-      if (kDebugMode) {
-        print('Error loading user data: $e');
-      }
+      print('Error loading user data: $e');
     }
   }
 
   void _loadUsername() async {
     final prefs = await SharedPreferences.getInstance();
     final loadedUsername = prefs.getString('username');
-    if (kDebugMode) {
-      print('Loaded username: $loadedUsername');
-    }
     setState(() {
       username = loadedUsername;
     });
@@ -53,24 +48,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _goToUserProfile() {
-    if (username != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => UserProfilePage(username: username!),
-        ),
-      );
-    }
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _pages = [
+      Center(child: Text('Welcome to the Home Page!')),
+      UserProfilePage(
+          username: username!), // Assurez-vous de passer l'utilisateur ici
+      // Ajoutez d'autres pages si nécessaire
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
-        backgroundColor: MyApp.primaryColor,
-
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
@@ -78,22 +73,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Welcome to the Home Page!'),
-            if (username != null) ...[
-              Text('Logged in as: $username'),
-              IconButton(
-                icon: Icon(Icons.person),
-                onPressed: _goToUserProfile, // Navigue vers la page de profil
-                tooltip: 'View Profile',
-              ),
-            ] else
-              Text('Loading username...'),
-          ],
-        ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
       ),
     );
   }

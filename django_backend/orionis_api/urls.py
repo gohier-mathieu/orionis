@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
-from api.views import user_detail
 from authentication.views import RegisterView, LoginView, check_username_email
 from api.views import HomePageView
 
