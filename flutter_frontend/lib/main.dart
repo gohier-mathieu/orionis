@@ -9,12 +9,23 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static const Color primaryColor = Color(0xFF6200EA);
+  static const Color secondaryColor = Color(0xFF03DAC6);
+  static const Color backgroundColor = Color(0xFFF5F5F5);
+  static const Color primaryAccentColor = Color(0xFFFFC107);
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Auth Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: primaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: secondaryColor,
+          background: backgroundColor, // Définir la couleur de fond dans ColorScheme
+          primary: primaryColor,
+          primaryContainer: primaryAccentColor, // Optionnel pour définir un accent primaire
+        ),
       ),
       home: FutureBuilder<bool>(
         future: ApiService.isLoggedIn(),

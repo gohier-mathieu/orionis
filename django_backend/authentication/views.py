@@ -6,6 +6,24 @@ from django.contrib.auth.models import User
 from .models import CustomUser
 from .serializers import UserSerializer
 from django.utils.translation import gettext_lazy as _
+from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view
+
+User = get_user_model()
+
+@api_view(['GET'])
+def check_username_email(request):
+    username = request.GET.get('username')
+    email = request.GET.get('email')
+
+    # Remplacez ceci par votre logique de vérification
+    username_exists = User.objects.filter(username=username).exists()
+    email_exists = User.objects.filter(email=email).exists()
+
+    available = not (username_exists or email_exists)
+
+    return Response({'available': available})
 
 class RegisterView(APIView):
     def post(self, request):
@@ -45,5 +63,6 @@ class LoginView(APIView):
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
+                'username': user.username
             })
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
